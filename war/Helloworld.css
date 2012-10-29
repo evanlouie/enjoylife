@@ -1,0 +1,45 @@
+/** /Lightbox background * /*/
+#lightbox {
+	display: none;
+	background: #000000;
+	opacity: 0.9;
+	filter: alpha(opacity = 90);
+/*	position: absolute;*/
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	min-width: 100%;
+	min-height: 100%;
+	z-index: 1000;
+}
+/* Lightbox panel with some content */
+#lightbox-panel {
+	background: transparent;
+	opacity: 0.9;
+	filter: alpha(opacity = 90);
+	display: none;
+	position: fixed;
+	top: 100px;
+	left: 50%;
+	margin-left: -500px;
+	width: 965px;
+	bottom: 100px;
+	padding: 10px 15px 10px 15px;
+	/*border: 2px solid #CCCCCC;*/
+	z-index: 1001;
+	overflow: auto;
+}
+
+#loadingBox {
+	display: none;
+	background: #000000;
+	opacity: 0.9;
+	filter: alpha(opacity = 90);
+/*	position: absolute;*/
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	min-width: 100%;
+	min-height: 100%;
+	z-index: 1000;
+}

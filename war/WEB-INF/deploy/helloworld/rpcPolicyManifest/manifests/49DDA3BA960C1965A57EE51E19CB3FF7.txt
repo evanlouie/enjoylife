@@ -1,0 +1,2 @@
+serviceClass: cs310.client.GreetingService
+path: 769488ED31A1183FF0B8765622EF7244.gwt.rpc
