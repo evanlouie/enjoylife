@@ -2,6 +2,7 @@ package cs310.client;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.Button;
 
 public class ListItem {
 
@@ -43,9 +44,10 @@ public class ListItem {
 //		a.setAttribute("href", "LINK");
 		a.setAttribute("class", "ui-link-inherit");
 		a.setInnerText(Name);
-		Element span = DOM.createElement("span");
+		Element span = DOM.createElement("button");
 		span.setAttribute("class", "ui-icon ui-icon-arrow-r ui-icon-shadow");
-
+		
+		span.setAttribute("id", ParkID);
 		div1.appendChild(a);
 		div.appendChild(div1);
 		div.appendChild(span);

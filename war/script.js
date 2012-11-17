@@ -77,7 +77,9 @@ $(document).on('click', 'a.ui-link-inherit', function() {
 	makeMarker({
 		position: new google.maps.LatLng(ll[0], ll[1]),
 		title: $(this).attr('name'),
-		content: 	'<div><h1>'+$(this).attr('name')+
+		content: 	
+			'<iframe marginheight="0" marginwidth="0" name="wxButtonFrame" id="wxButtonFrame" height="90" src="http://btn.weather.ca/weatherbuttons/template5.php?placeCode=CABC0308&category0=Cities&containerWidth=150&btnNo=&backgroundColor=blue&multipleCity=0&citySearch=0&celsiusF=C" align="top" frameborder="0" width="150" scrolling="no" allowTransparency="true"></iframe>'+
+			'<div><h1>'+$(this).attr('name')+
 					'</h1><h2>Information</h2><table>'+
 					'<tr><td>Address:</td><td>'+$(this).attr('streetnumber')+' '+$(this).attr('streetname')+'</td></tr>'+
 					'<tr><td>Intersection:</td><td>'+$(this).attr('ewstreet')+' and '+$(this).attr('nsstreet')+'</td></tr>'+
@@ -87,6 +89,7 @@ $(document).on('click', 'a.ui-link-inherit', function() {
 					'<tr><td>Advisories:</td><td>'+$(this).attr('advisories')+'</td></tr>'+
 					'<tr><td>Facilities:</td><td>'+$(this).attr('facilities')+'</td></tr>'+
 					'<tr><td>Special Features:</td><td>'+$(this).attr('specialfeatures')+'</td></tr>'+
+					'<tr><td>Learn More:</td><td><a href="'+window.location.pathname+'/park/'+
 					'</table></div>',
 		animation: google.maps.Animation.DROP
 	})					

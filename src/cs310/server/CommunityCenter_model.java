@@ -51,13 +51,13 @@ public class CommunityCenter_model {
 		return ccs;
 	}
 	public static void main(String[] argsv) {
-		CommunityCenter_model park = new CommunityCenter_model();
+		CommunityCenter_model center = new CommunityCenter_model();
 		try {
-			ArrayList<CommunityCenter_model> parks = new ArrayList<CommunityCenter_model>();
-			parks = park.getAllCommunityCenters("http://www.evanlouie.com/cs310/index.php/api/community_center/community_centers/fomat/xml");
-			Iterator<CommunityCenter_model> it = parks.iterator();
+			ArrayList<CommunityCenter_model> centers = new ArrayList<CommunityCenter_model>();
+			centers = center.getAllCommunityCenters("http://www.evanlouie.com/cs310/index.php/api/community_center");
+			Iterator<CommunityCenter_model> it = centers.iterator();
 			while(it.hasNext()) {
-				System.out.println(it.next().getCenterName());
+//				System.out.println(it.next().getCenterName());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

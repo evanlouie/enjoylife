@@ -1,8 +1,8 @@
 package cs310.client;
 
-import java.security.DomainCombiner;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import cs310.shared.FieldVerifier;
 import com.google.gwt.core.client.EntryPoint;
@@ -60,6 +60,8 @@ public class Helloworld implements EntryPoint {
 				.getElementById("search-query"));
 		nameField.setText("GWT User");
 		final Label errorLabel = new Label();
+		
+		final ArrayList<Button> buttons = new ArrayList<Button>();
 
 		// Focus the cursor on the name field when the app loads
 		searchQuery.setFocus(true);
@@ -161,6 +163,7 @@ public class Helloworld implements EntryPoint {
 						ListItem ListItem = null;
 						Element li;
 						Iterator<Park> it = parks.iterator();
+						ArrayList<Integer> parkids = new ArrayList<Integer>();
 						while (it.hasNext()) {
 							park = (Park) it.next();
 							try {
@@ -182,13 +185,27 @@ public class Helloworld implements EntryPoint {
 																park.getAdvisories(), park
 																.getFacilities(), park
 																.getSpecialFeatures());
+								int parkId = park.getParkid();
+								parkids.add(parkId);
+								try {
+								} catch(Exception e) {
+									e.printStackTrace();
+								}
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
 							li = ListItem.getLi();
 							DOM.getElementById("search_result_list")
 							.appendChild(li);
+							Iterator<Integer> iterator = parkids.iterator();
+							while(iterator.hasNext()) {
+								int parkid = iterator.next();
+								Button button = Button.wrap(DOM.getElementById(Integer.toString(parkid)));
+								buttons.add(button);
+							}
+							
 						}
+						
 					}
 				});
 			}
