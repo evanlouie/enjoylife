@@ -12,10 +12,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
 	public String greetServer(String input) throws IllegalArgumentException {
-		// Verify that the input is valid. 
-		if(input.length() < 3 ) {
-			throw new IllegalArgumentException("Name must be longer that 3 letters");
-		}
+//		// Verify that the input is valid. 
+//		if(input.length() < 3 ) {
+//			throw new IllegalArgumentException("Name must be longer that 3 letters");
+//		}
 
 //		String serverInfo = getServletContext().getServerInfo();
 //		String userAgent = getThreadLocalRequest().getHeader("User-Agent");

@@ -271,7 +271,7 @@ public class Helloworld implements EntryPoint {
 //						favoriteButton.setEnabled(false);
 						favoriteButton.setText("Added!");
 						DOM.getElementById("favouritesContent").setInnerHTML(result);
-//						Window.alert(result);
+						Window.alert("Added to your favourites!");
 					}
 					
 				});
@@ -346,10 +346,10 @@ public class Helloworld implements EntryPoint {
 				// First, we validate the input.
 				errorLabel.setText("");
 				String textToServer = searchQuery.getText();
-				if (!FieldVerifier.isValidName(textToServer)) {
-					errorLabel.setText("Please enter at least four characters");
-					return;
-				}
+//				if (!FieldVerifier.isValidName(textToServer)) {
+//					errorLabel.setText("Please enter at least four characters");
+//					return;
+//				}
 
 				// Then, we send the input to the server.
 				searchButton.setEnabled(false);
@@ -358,6 +358,9 @@ public class Helloworld implements EntryPoint {
 				greetingService.greetServer(textToServer, new AsyncCallback<String>() {
 					public void onFailure(Throwable caught) {
 						Window.alert("Search text must be greater than 3 characters");
+						DOM.getElementById("lightbox").removeAttribute("style");
+						DOM.getElementById("lightbox-panel").removeAttribute("style");
+						
 					}
 
 					public void onSuccess(String xmlString) {
