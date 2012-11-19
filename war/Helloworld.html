@@ -3,14 +3,6 @@
 	<head>
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<style type="text/css">
-/*			html {
-				height: 100%
-			}
-			body {
-				height: 100%;
-				margin: 0;
-				padding: 0
-			}*/
 			#map_canvas {
 				height: 100%
 			}
@@ -20,37 +12,48 @@
 		<link rel="stylesheet" href="tables.css" />
 
 		<link href='http://fonts.googleapis.com/css?family=Vollkorn:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+		<link rel='stylesheet' type='text/css' href='table-style.css'>
 		<script src="helloworld/helloworld.nocache.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
 		<script src="jquery.mobile-1.1.1.min.js"></script>
 		<script type="text/javascript"
 		src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBNEuIFL43dkYvGC8khpqXju86Mt-xdtrs&sensor=false"></script>
+		<script src="jquery.tablesorter.min.js"></script>
 		<script src="script.js"></script>
-		<script>
-
-		</script>
+		<script></script>
 
 	</head>
 	<body onload="initialize()">
-		<div id="fb-root"></div>
-
-		<div data-role="page">
+		<div id='fb-root'></div>
+		<div data-role="page" id="login">
+			<div data-role="header">
+				<h1>Login</h1>
+			</div>
+			<div data-role="content"  style="padding:0; height:100%; width:100%; position:fixed; z-index:0;background-image:url('images/wall.jpg') !important; background-size:100%">	
+				<div style='margin:10% 30%; padding:30px 30px; background:white; border-radius:20px'>
+					<label><strong>Email:</strong></label><input type='text' id="loginEmail" value=""></input>
+					<label><strong>Password:</strong></label><input type='password' id="loginPassword" value=""></input>
+					<button id='loginButton'>Login</button>
+					<a href="#register" style='float:right;'>Not a Member?</a>
+				</div>
+			</div>
+		</div>
+		<div data-role="page" id="home">
 
 			<div data-role="header" data-theme="">
-				<a href="#page1" data-icon="gear" style="display:none">Settings</a>
-				<h1>Welcome Back Evan!</h1>
-				<a href="#" data-icon="gear" onclick="document.getElementById('').style.display='none'">Settings</a>
+				<a href="#home" data-icon="home">Home</a> 
+				<h1>Welcome Back!</h1>
 				<div data-role="navbar">
 					<ul>
 						<li>
-							<a href="#parks" data-role="button" data-transition="slide">Parks</a>
+							<a href="#parks" data-role="button">Park Listings</a>
 						</li>
 						<li>
-							<a href="#place" data-role="button" data-shadow="false" data-transition="slide">woeijfowij</a>
+							<a href="#favourites" data-role="button">My Favourites</a>
 						</li>
 						<li>
-							<a href="@page3" data-role="button" data-shadow="true">Logout</a>
+							<a href="#login" data-role="button" data-shadow="true">Logout</a>
 						</li>
 					</ul>
 				</div>
@@ -58,7 +61,7 @@
 
 			<div data-role="content" data-theme="" style='padding:0' style='height:100%'>
 				<div data-role="content" id='search_section' style='position:absolute; width:20%; height:85%; background:white;'>
-					<input type="text" name="search_text" id="search-query" value="Search Query" onclick="value='' "/>
+					<input type="text" name="search_text" id="search-query" value="Park Search" onclick="value='' "/>
 					<button data-icon="search" id="search-button" >Go!</button>
 					<ul id="search_result_list" data-role="listview" style="margin-top:15px;">
 
@@ -92,79 +95,98 @@
 
 			<!-- /content -->
 
-			<!-- <div data-role="footer" data-theme="" style='position:fixed !important; bottom:0;'>
-				<a href='#' data-role='button' data-icon='plus'>Add</a>
-				<a href='#' data-role='button' data-icon='arrow-u'>Up</a>
-				<a href='#' data-role='button' data-icon='arrow-d'>Down</a>
-			</div> -->
-
 		</div><!-- /page -->
 
-		<div data-role="page" id="parks" data-add-back-btn="true" data-back-btn-theme="">
+		<div data-role="page" id="parks">
 			<div data-role="header">
-				<h1>Courses</h1>
+			<a href='#home' data-icon='home'>Home</a>
+				<h1>Park Listings</h1>
 				<div data-role="navbar">
 					<ul>
 						<li>
-							<a href="#parks" data-role="button" data-transition="slide">Parks</a>
+							<a href="#parks" data-role="button">Park Listings</a>
 						</li>
 						<li>
-							<a href="@page2" data-role="button" data-shadow="false">Settings</a>
+							<a href="#favourites" data-role="button" data-shadow="false">My Favourites</a>
 						</li>
 						<li>
-							<a href="@page3" data-role="button" data-shadow="true">Logout</a>
+							<a href="#login" data-role="button" data-shadow="true">Logout</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-			<div data-role="content">
-				<a href='#' data-role='button'>Route 1</a>
-				<a href='#' data-role='button'>Route 2</a>
-				<a href='#' data-role='button'>Route 3</a>
-				<a href='#' data-role='button'>Route 4</a>
-				<a href='#' data-role='button'>Route 5</a>
+			<div id='parksTableContainer' data-role="content">
+				
 			</div>
-			<!-- <div data-role="footer">
-				<a href='#' data-role='button' data-icon='plus'>Add</a>
-				<a href='#' data-role='button' data-icon='arrow-u'>Up</a>
-				<a href='#' data-role='button' data-icon='arrow-d'>Down</a>
-			</div> -->
+		</div>
+		<div data-role="page" id="favourites">
+			<div data-role="header">
+				<a href="#home" data-icon="home">Home</a> 
+				<h1>Park Listings</h1>
+				<div data-role="navbar">
+					<ul>
+						<li>
+							<a href="#parks" data-role="button">Park Listings</a>
+						</li>
+						<li>
+							<a href="#favourites" data-role="button" data-shadow="false">My Favourites</a>
+						</li>
+						<li>
+							<a href="#login" data-role="button" data-shadow="true">Logout</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div data-role='content' id='favouritesContent'>
+
+			</div>
+
+		</div>
+		
+
+		<div data-role="page" id="register">
+			<div data-role="header">
+				<h1>Register</h1>
+			</div>
+			<div data-role="content"  style="padding:0; height:100%; width:100%; position:fixed; z-index:0;background-image:url('images/regi_wall.jpg') !important; background-size:100%">
+				<div style='margin:10% 30%; padding:30px 30px; background:white; border-radius:20px'>
+					<label><strong>Email:</strong></label><input type='text' id='registerEmail' value=""></input>
+					<label><strong>Password:</strong></label><input type='password' id='registerPassword' value=""></input>
+					<label><strong>First Name:</strong></label><input type='text' id='registerFname' value=""></input>
+					<label><strong>Last Name:</strong></label><input type='text' id='registerLname' value=""></input>
+					<button id='registerButton'>Register</button>
+				</div>
+			</div>
 		</div>
 
-
-
-		<div data-role="page" id="place" data-add-back-btn="true" data-back-btn-theme="">
+		<div data-role="page" id="place">
 
 			<div data-role="header">
-
-				<h1>Arbutus Park</h1>
+				<a href="#home" data-icon="home">Home</a>
+				<h1 id='park_name'>Park Details</h1>
 				<div data-role="navbar">
 					<ul>
 						<li>
-							<a href="#parks" data-role="button" data-transition="slide">Parks</a>
+							<a href="#parks" data-role="button">Parks Listings</a>
 						</li>
 						<li>
-							<a href="@page2" data-role="button" data-shadow="false">Settings</a>
+							<a href="#favourites" data-role="button" data-shadow="false">My Favourites</a>
 						</li>
 						<li>
-							<a href="@page3" data-role="button" data-shadow="true">Logout</a>
+							<a href="#login" data-role="button" data-shadow="true">Logout</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-			<div data-role="content" style="padding:0">
+			<div data-role="content"  style="padding:0; background:white !important">
 				<div style='width:100%; height:100%; background:white; position:fixed; top:0; z-index:-1'></div> 
 
-				<div id='parkContainer' class='container' style='width:960px; background:white; margin:0 auto; padding: 0;'>
-					<div>ao;wiejf;oweijf;oweijf;oaiewjfoawijfowejf</div>
-				<!-- <div class="fb-comments" data-href="http://evanlouie.com" data-num-posts="20" data-width="960"></div> -->
+				<div id='parkBrace' class='container' style='width:960px; background:white !important; margin:0 auto; padding: 0;'>
+					<button id="favoriteButton">Favorite Me!</button>
+					<div id='parkContainer'>
+					</div>
 				</div>
 			</div>
-			<!-- <div data-role="footer" style='position:fixed !important;'>
-				<a href='#' data-role='button' data-icon='plus'>Add</a>
-				<a href='#' data-role='button' data-icon='arrow-u'>Up</a>
-				<a href='#' data-role='button' data-icon='arrow-d'>Down</a>
-			</div> -->
 		</div>
 
 

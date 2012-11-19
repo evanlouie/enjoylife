@@ -1,2 +1,3 @@
 # Module helloworld
 # RPC service class, partial path of RPC policy file
+cs310.client.GreetingService, 769488ED31A1183FF0B8765622EF7244.gwt.rpc

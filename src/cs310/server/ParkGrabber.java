@@ -14,7 +14,7 @@ public class ParkGrabber extends RemoteServiceServlet  {
 	public String grab(String park_id) {
 		String string = "";
 		try {
-			URL url = new URL("http://localhost/test.php?park_id=" + park_id);
+			URL url = new URL("http://evanlouie.com/cs310/scripts/parkGrabber.php?park_id=" + park_id);
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					url.openStream()));
 			String inputLine;

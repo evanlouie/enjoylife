@@ -1,7 +1,5 @@
 package cs310.server;
 
-import java.util.Random;
-
 import cs310.client.GreetingService;
 import cs310.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -45,8 +43,44 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return grabber.grab(park_id);
 	}
 	
+	public String getParksTable() {
+		ParkTableGrabber ptg = new ParkTableGrabber();
+		return ptg.grab();
+	}
 	
+	public String login(String email, String password) throws IllegalArgumentException {
+		User user = new User();
+		String users = user.login(email, password);
+		boolean contains = users.contains("<email>"+email+"</email>");
+		if (contains) {
+			return user.getId(email);
+		} else {
+			throw new IllegalArgumentException("Not such registered user");
+		}
+		
+	}
 	
+	public String register(String email, String password, String fname, String lname) {
+		User user = new User();
+		return user.addUser(email, password, fname, lname);
+	}
+	
+	public String favorites(String user_id) {
+		User user = new User();
+		return user.favorites(user_id);
+	}
+	
+	public String addFavorite(String user_id, String park_id) {
+		User user = new User();
+		user.addFavorite(user_id, park_id);
+		return this.favorites(user_id);
+	}
+	
+	public String removeFavorite(String user_id, String park_id) {
+		User user = new User();
+		user.removeFavorite(user_id, park_id);
+		return this.favorites(user_id);
+	}
 	
 
 	/**

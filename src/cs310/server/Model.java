@@ -40,7 +40,7 @@ public class Model {
 		try {
 			// Send Data
 			URL url = new URL(
-					"http://localhost/evanlouie/cs310/index.php/api/park");
+					"http://evanlouie.com/cs310/index.php/api/park");
 			URLConnection conn = url.openConnection();
 			conn.setDoOutput(true);
 			OutputStreamWriter wr = new OutputStreamWriter(

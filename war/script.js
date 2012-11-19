@@ -74,6 +74,7 @@ function openMarker(i){
  };
 $(document).on('click', 'a.ui-link-inherit', function() {
 	var ll = $(this).attr('googlemapdest').split(',');
+	var parkid = $(this).attr('parkid');
 	makeMarker({
 		position: new google.maps.LatLng(ll[0], ll[1]),
 		title: $(this).attr('name'),
@@ -89,11 +90,13 @@ $(document).on('click', 'a.ui-link-inherit', function() {
 					'<tr><td>Advisories:</td><td>'+$(this).attr('advisories')+'</td></tr>'+
 					'<tr><td>Facilities:</td><td>'+$(this).attr('facilities')+'</td></tr>'+
 					'<tr><td>Special Features:</td><td>'+$(this).attr('specialfeatures')+'</td></tr>'+
-					'<tr><td>Learn More:</td><td><a href="'+window.location.pathname+'/park/'+
-					'</table></div>',
+					'</table>'+
+					'<div class="fb-like" data-href="http://cfapp.vancouver.ca/parkfinder_wa/index.cfm?fuseaction=FAC.ParkDetails&park_id='+$(this).attr('parkid')+'" data-send="true" data-width="450" data-show-faces="true"></div>'+
+					'</div>',
 		animation: google.maps.Animation.DROP
 	})					
 	openMarker(markerArray.length-1);
+	FB.XFBML.parse();
 
 })
 
@@ -143,4 +146,50 @@ $(document).ready(function() {
 
 })
 
+function initSharing() {
+	SHRSB_Settings = {"shr_class":{"src":"","link":"","service":"5,7,2,313,38,88,74","apikey":"0747414f47c2b684cf5480c36b2478689","localize":true,"shortener":"bitly","shortener_key":"","designer_toolTips":true,"tip_bg_color":"black","tip_text_color":"white","twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+	SHRSB_Globals = {"perfoption":"1"};
+	(function() {
+		var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+		sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+		var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+	})();	
+}
 
+function initFacebook() {
+	(function(d, s, id) {
+	  	var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = '//connect.facebook.net/en_US/all.js#xfbml=1';
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+}
+
+$(document).on('load', '#fb-root', function(){
+	(function(d, s, id) {
+	  	var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = '//connect.facebook.net/en_US/all.js#xfbml=1';
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+})
+function initTable() {
+	$("#parksTable").tablesorter();
+}
+function refreshFacebook() {
+	$('#fb-root').remove();
+	$('.fb-comments').remove();
+	$('body').prepend("<div id=fb-root></div>");
+	(function(d, s, id) {
+	  	var js, fjs = d.getElementsByTagName(s)[0];
+		// if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = '//connect.facebook.net/en_US/all.js#xfbml=1';
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+}
+function refreshMaps() {
+	google.maps.event.trigger(map, "resize");
+}

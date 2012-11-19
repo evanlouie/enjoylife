@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -32,6 +33,8 @@ import com.google.gwt.xml.client.XMLParser;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Helloworld implements EntryPoint {
+	
+	private String user_id = "0";
 	/**
 	 * The message displayed to the user when the server cannot be reached or
 	 * returns an error.
@@ -46,11 +49,41 @@ public class Helloworld implements EntryPoint {
 	 */
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
-
+	public static native void refreshFacebook() /*-{
+		$wnd.refreshFacebook();
+	}-*/;
+	public static native void initSocial() /*-{
+	  $wnd.initSharing();
+//	  $wnd.initFacebook();
+	}-*/; 
+	public static native void initFacebook() /*-{
+		$wnd.initFacebook();
+	}-*/;
+	public static native void initTable() /*-{
+		$wnd.initTable();
+	}-*/;
+	public static native void forceRefreshFB() /*-{
+		$wnd.FB.XFBML.parse();
+	}-*/;
+	
+	public static native void refreshMaps() /*-{
+		$wnd.refreshMaps();
+	}-*/;
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		final Button loginButton = Button.wrap(DOM.getElementById("loginButton"));
+		final TextBox loginEmail = TextBox.wrap(DOM.getElementById("loginEmail"));
+		final PasswordTextBox passwordBox = PasswordTextBox.wrap(DOM.getElementById("loginPassword"));
+		
+		final Button registerButton = Button.wrap(DOM.getElementById("registerButton"));
+		final TextBox registerEmail = TextBox.wrap(DOM.getElementById("registerEmail"));
+		final PasswordTextBox registerPassword = PasswordTextBox.wrap(DOM.getElementById("registerPassword"));
+		final TextBox registerFname = TextBox.wrap(DOM.getElementById("registerFname"));
+		final TextBox registerLname = TextBox.wrap(DOM.getElementById("registerLname"));
+
+		final Button favoriteButton = Button.wrap(DOM.getElementById("favoriteButton"));
 		// HelloWorldPage page = new HelloWorldPage();
 		// JQMContext.changePage(page);
 
@@ -95,6 +128,155 @@ public class Helloworld implements EntryPoint {
 				searchButton.setFocus(true);
 			}
 		});
+		initFacebook();
+		greetingService.getParksTable(new AsyncCallback<String>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.toString());
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				DOM.getElementById("parksTableContainer").setInnerHTML(result);		
+				initTable();
+			}
+			
+		});
+		class RegisterHandler implements ClickHandler, KeyUpHandler {
+
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					register();
+				}				
+			}
+
+			@Override
+			public void onClick(ClickEvent event) {
+				register();
+			}
+			public void register() {
+				String email = registerEmail.getText();
+				String password = registerPassword.getText();
+				String fname = registerFname.getText();
+				String lname = registerLname.getText();
+//				Window.alert(email+password+fname+lname);
+				greetingService.register(email, password, fname, lname, new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("ERROR:" + caught.toString());
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						Window.alert("Registration Successful: Enjoy!");
+						int length = Window.Location.getHref().length();
+						Window.Location.replace(Window.Location.getHref().substring(0, length-9)+"#login");
+						
+					}
+					
+				});
+			}
+		}
+		class LoginHandler implements ClickHandler, KeyUpHandler {
+
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					login();
+				}
+			}
+
+			@Override
+			public void onClick(ClickEvent event) {
+				login();
+			}
+			
+			public void login() {
+				String email = loginEmail.getText();
+				String password = passwordBox.getText();
+//				Window.alert(email+password);
+
+					greetingService.login(email, password, new AsyncCallback<String>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert(caught.toString());
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							user_id = result;
+							int length = Window.Location.getHref().length();
+//							Window.alert(Window.Location.getHref().substring(length-6, length));
+							if (Window.Location.getHref().substring(length-6, length).equals("#login")) {
+								Window.Location.replace(Window.Location.getHref().substring(0, length-6)+"#home");
+								refreshMaps();
+							} else {
+								Window.Location.replace(Window.Location.getHref()+"#home");
+								refreshMaps();
+							}
+							greetingService.favorites(user_id, new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert("ERROR:"+caught.toString());
+									
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									DOM.getElementById("favouritesContent").setInnerHTML(result);
+									
+																
+								}
+								
+							});
+							initTable();
+							
+						}
+					});
+					
+			}
+			
+		}
+		class FavoriteButtonHandler implements ClickHandler {
+			
+			public String park_id;
+			
+			public FavoriteButtonHandler(String park_id) {
+				this.park_id = park_id;
+			}
+			@Override
+			public void onClick(ClickEvent event) {
+				favorite(park_id);
+				
+			}
+			public void favorite(String park_id) {
+//				Window.alert("park:"+park_id+"user:"+user_id);
+				greetingService.addFavorite(user_id, park_id, new AsyncCallback<String>(){
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Error: "+caught.toString());
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+//						favoriteButton.setEnabled(false);
+						favoriteButton.setText("Added!");
+						DOM.getElementById("favouritesContent").setInnerHTML(result);
+//						Window.alert(result);
+					}
+					
+				});
+			}
+		}
 		class ListItemHandler implements ClickHandler {
 			String park_id;
 			
@@ -107,14 +289,6 @@ public class Helloworld implements EntryPoint {
 			}
 			
 			private void loadParkPage() {
-				while (DOM.getElementById("parkContainer")
-						.hasChildNodes()) {
-					DOM.getElementById("parkContainer")
-					.removeChild(
-							DOM.getElementById(
-									"parkContainer")
-									.getLastChild());
-				}
 				greetingService.getParkPage(park_id, new AsyncCallback<String>() {
 					@Override
 					public void onFailure(Throwable caught) {
@@ -125,7 +299,19 @@ public class Helloworld implements EntryPoint {
 					public void onSuccess(String result) {
 //						Window.alert(result);
 						DOM.getElementById("parkContainer").setInnerHTML(result);
-						Window.Location.replace(Window.Location.getHref()+"#place");
+						
+						int length = Window.Location.getHref().length();
+						if(Window.Location.getHref().substring(length-5, length).equals("#home")) {
+							Window.Location.replace(Window.Location.getHref().substring(0, length-5)+"#place");
+						}
+						else {
+							Window.Location.replace(Window.Location.getHref()+"#place");
+						}
+						FavoriteButtonHandler fbh = new FavoriteButtonHandler(park_id);
+						favoriteButton.addClickHandler(fbh);
+						initSocial();
+						forceRefreshFB();
+						
 					}
 				});
 			}
@@ -169,8 +355,7 @@ public class Helloworld implements EntryPoint {
 				searchButton.setEnabled(false);
 				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
-				greetingService.greetServer(textToServer,
-						new AsyncCallback<String>() {
+				greetingService.greetServer(textToServer, new AsyncCallback<String>() {
 					public void onFailure(Throwable caught) {
 						Window.alert("Search text must be greater than 3 characters");
 					}
@@ -243,12 +428,21 @@ public class Helloworld implements EntryPoint {
 			}
 		}
 		
+		
+		
 		// Add a handler to send the name to the server
 		MyHandler handler = new MyHandler();
 		searchButton.addClickHandler(handler);
 		searchQuery.addKeyUpHandler(handler);
-//		
-//		ListItemHandler lih = new ListItemHandler("11");
-//		searchButton.addClickHandler(lih);
+		
+		LoginHandler lh = new LoginHandler();
+		loginButton.addClickHandler(lh);
+		passwordBox.addKeyUpHandler(lh);
+		
+		RegisterHandler rh = new RegisterHandler();
+		registerButton.addClickHandler(rh);
+		registerLname.addKeyUpHandler(rh);
+		
+
 	}
 }
