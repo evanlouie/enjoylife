@@ -11,11 +11,21 @@
     <url-pattern>/helloworld/greet</url-pattern>
   </servlet-mapping>
   
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Helloworld.html</welcome-file>
   </welcome-file-list>
-
+  
+  <servlet>
+  	<servlet-name>ParkGrabberServlet</servlet-name>
+  	<servlet-class>cs310.server.ParkGrabber</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ParkGrabberServlet</servlet-name>
+  	<url-pattern>/helloworld/grab</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <servlet-name>SystemServiceServlet</servlet-name>
     <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>

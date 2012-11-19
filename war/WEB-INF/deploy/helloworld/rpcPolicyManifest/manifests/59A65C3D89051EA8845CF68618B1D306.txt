@@ -1,0 +1,2 @@
+serviceClass: cs310.client.ParkGrabberService
+path: 712BD8BF7DA878E62B24761055488337.gwt.rpc

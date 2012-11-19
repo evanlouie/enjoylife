@@ -4,18 +4,17 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class ParkGrabber {
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-	int parkid;
+@SuppressWarnings("serial")
+public class ParkGrabber extends RemoteServiceServlet  {
 
-	public ParkGrabber(int parkid) {
-		this.parkid = parkid;
-	}
+	public String html = "";
 
-	public void grab() {
+	public String grab(String park_id) {
 		String string = "";
 		try {
-			URL url = new URL("http://localhost/test.php");
+			URL url = new URL("http://localhost/test.php?park_id=" + park_id);
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					url.openStream()));
 			String inputLine;
@@ -24,13 +23,16 @@ public class ParkGrabber {
 				string = string + inputLine;
 			}
 			System.out.println(string);
+			html = string;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+		return html;
+
 	}
 
 	public static void main(String[] args) {
-		ParkGrabber grabber = new ParkGrabber(1);
-		grabber.grab();
+		ParkGrabber grabber = new ParkGrabber();
+		grabber.grab("33");
 	}
 }

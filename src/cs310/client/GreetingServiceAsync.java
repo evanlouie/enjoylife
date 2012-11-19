@@ -8,4 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface GreetingServiceAsync {
 	void greetServer(String input, AsyncCallback<String> callback)
 			throws IllegalArgumentException;
+
+	void getParkPage(String park_id, AsyncCallback<String> callback)
+			throws IllegalArgumentException;
 }

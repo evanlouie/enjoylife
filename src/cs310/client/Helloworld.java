@@ -17,6 +17,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -94,6 +95,41 @@ public class Helloworld implements EntryPoint {
 				searchButton.setFocus(true);
 			}
 		});
+		class ListItemHandler implements ClickHandler {
+			String park_id;
+			
+			ListItemHandler(String park_id) {
+				this.park_id = park_id;
+			}
+
+			public void onClick(ClickEvent event) {
+				loadParkPage();
+			}
+			
+			private void loadParkPage() {
+				while (DOM.getElementById("parkContainer")
+						.hasChildNodes()) {
+					DOM.getElementById("parkContainer")
+					.removeChild(
+							DOM.getElementById(
+									"parkContainer")
+									.getLastChild());
+				}
+				greetingService.getParkPage(park_id, new AsyncCallback<String>() {
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.toString());
+						
+					}
+					@Override
+					public void onSuccess(String result) {
+//						Window.alert(result);
+						DOM.getElementById("parkContainer").setInnerHTML(result);
+						Window.Location.replace(Window.Location.getHref()+"#place");
+					}
+				});
+			}
+		}
 
 		// Create a handler for the sendButton and nameField
 		class MyHandler implements ClickHandler, KeyUpHandler {
@@ -112,7 +148,8 @@ public class Helloworld implements EntryPoint {
 					sendNameToServer();
 				}
 			}
-
+			
+			
 			/**
 			 * Send the name from the nameField to the server and wait for a
 			 * response.
@@ -135,17 +172,11 @@ public class Helloworld implements EntryPoint {
 				greetingService.greetServer(textToServer,
 						new AsyncCallback<String>() {
 					public void onFailure(Throwable caught) {
-						// Show the RPC error message to the user
-						dialogBox
-						.setText("Remote Procedure Call - Failure");
-						serverResponseLabel
-						.addStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(SERVER_ERROR);
-						dialogBox.center();
-						closeButton.setFocus(true);
+						Window.alert("Search text must be greater than 3 characters");
 					}
 
 					public void onSuccess(String xmlString) {
+						searchButton.setEnabled(true);
 						DOM.getElementById("lightbox").removeAttribute("style");
 						DOM.getElementById("lightbox-panel").removeAttribute("style");
 
@@ -197,23 +228,27 @@ public class Helloworld implements EntryPoint {
 							li = ListItem.getLi();
 							DOM.getElementById("search_result_list")
 							.appendChild(li);
-							Iterator<Integer> iterator = parkids.iterator();
-							while(iterator.hasNext()) {
-								int parkid = iterator.next();
-								Button button = Button.wrap(DOM.getElementById(Integer.toString(parkid)));
-								buttons.add(button);
-							}
-							
+
+						}
+						Iterator<Integer> iterator = parkids.iterator();
+						while(iterator.hasNext()) {
+							int parkid = iterator.next();
+							Button button = Button.wrap(DOM.getElementById(Integer.toString(parkid)));
+							ListItemHandler lih = new ListItemHandler(Integer.toString(parkid));
+							button.addClickHandler(lih);
 						}
 						
 					}
 				});
 			}
 		}
-
+		
 		// Add a handler to send the name to the server
 		MyHandler handler = new MyHandler();
 		searchButton.addClickHandler(handler);
 		searchQuery.addKeyUpHandler(handler);
+//		
+//		ListItemHandler lih = new ListItemHandler("11");
+//		searchButton.addClickHandler(lih);
 	}
 }

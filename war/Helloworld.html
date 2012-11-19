@@ -17,6 +17,9 @@
 		</style>
 		<link rel="stylesheet" href="Helloworld.css" />
 		<link rel="stylesheet" href="jquery.mobile-1.1.1.min.css" />
+		<link rel="stylesheet" href="tables.css" />
+
+		<link href='http://fonts.googleapis.com/css?family=Vollkorn:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
 		<script src="helloworld/helloworld.nocache.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
@@ -30,6 +33,8 @@
 
 	</head>
 	<body onload="initialize()">
+		<div id="fb-root"></div>
+
 		<div data-role="page">
 
 			<div data-role="header" data-theme="">
@@ -39,10 +44,10 @@
 				<div data-role="navbar">
 					<ul>
 						<li>
-							<a href="#routes" data-role="button" data-transition="flip">Routes</a>
+							<a href="#parks" data-role="button" data-transition="slide">Parks</a>
 						</li>
 						<li>
-							<a href="@page2" data-role="button" data-shadow="false">Settings</a>
+							<a href="#place" data-role="button" data-shadow="false" data-transition="slide">woeijfowij</a>
 						</li>
 						<li>
 							<a href="@page3" data-role="button" data-shadow="true">Logout</a>
@@ -52,14 +57,14 @@
 			</div><!-- /header -->
 
 			<div data-role="content" data-theme="" style='padding:0' style='height:100%'>
-				<div data-role="content" id='search_section' style='position:absolute; width:20%; height:81%; background:white;'>
+				<div data-role="content" id='search_section' style='position:absolute; width:20%; height:85%; background:white;'>
 					<input type="text" name="search_text" id="search-query" value="Search Query" onclick="value='' "/>
 					<button data-icon="search" id="search-button" >Go!</button>
 					<ul id="search_result_list" data-role="listview" style="margin-top:15px;">
 
 					</ul>
 				</div>
-				<div id="map_canvas" style="position:absolute; width:78%; height:85%; right:0px;"></div>
+				<div id="map_canvas" style="position:absolute; width:78%; height:89%; right:0px;"></div>
 				<div data-role="fieldcontain" style="position:absolute; bottom:5%;	right:-80px; width:250px;">
 					    <fieldset data-role="controlgroup">
 						   <input type="checkbox" name="bikeways-checkbox" id="bikeways-checkbox" class="custom" data-mini="true" checked='checked' />
@@ -73,7 +78,7 @@
 				<div id="lightbox-panel">
 					<!-- <h2 id='lightboxHeader'>Lightbox Panel</h2> -->
 					<!-- <div id='lightboxContent'>			 -->
-						<div id='lightboxContent' align="center"><img border="0" src="/images/ajax.gif" alt="ajax" width="100" height="100"></div>
+						<div id='lightboxContent' align="center"><img border="0" src="images/ajax.gif" alt="ajax" width="100" height="100"></div>
 					<!-- </div> -->
 					<p align="center">
 						<!-- <a class="close-panel" href="#">Complete Editing</a> -->
@@ -87,21 +92,21 @@
 
 			<!-- /content -->
 
-			<div data-role="footer" data-theme="">
+			<!-- <div data-role="footer" data-theme="" style='position:fixed !important; bottom:0;'>
 				<a href='#' data-role='button' data-icon='plus'>Add</a>
 				<a href='#' data-role='button' data-icon='arrow-u'>Up</a>
 				<a href='#' data-role='button' data-icon='arrow-d'>Down</a>
-			</div>
+			</div> -->
 
 		</div><!-- /page -->
 
-		<div data-role="page" id="routes" data-add-back-btn="true" data-back-btn-theme="">
+		<div data-role="page" id="parks" data-add-back-btn="true" data-back-btn-theme="">
 			<div data-role="header">
 				<h1>Courses</h1>
 				<div data-role="navbar">
 					<ul>
 						<li>
-							<a href="#routes" data-role="button" data-transition="slide">Routes</a>
+							<a href="#parks" data-role="button" data-transition="slide">Parks</a>
 						</li>
 						<li>
 							<a href="@page2" data-role="button" data-shadow="false">Settings</a>
@@ -119,11 +124,49 @@
 				<a href='#' data-role='button'>Route 4</a>
 				<a href='#' data-role='button'>Route 5</a>
 			</div>
-			<div data-role="footer">
+			<!-- <div data-role="footer">
 				<a href='#' data-role='button' data-icon='plus'>Add</a>
 				<a href='#' data-role='button' data-icon='arrow-u'>Up</a>
 				<a href='#' data-role='button' data-icon='arrow-d'>Down</a>
-			</div>
+			</div> -->
 		</div>
+
+
+
+		<div data-role="page" id="place" data-add-back-btn="true" data-back-btn-theme="">
+
+			<div data-role="header">
+
+				<h1>Arbutus Park</h1>
+				<div data-role="navbar">
+					<ul>
+						<li>
+							<a href="#parks" data-role="button" data-transition="slide">Parks</a>
+						</li>
+						<li>
+							<a href="@page2" data-role="button" data-shadow="false">Settings</a>
+						</li>
+						<li>
+							<a href="@page3" data-role="button" data-shadow="true">Logout</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content" style="padding:0">
+				<div style='width:100%; height:100%; background:white; position:fixed; top:0; z-index:-1'></div> 
+
+				<div id='parkContainer' class='container' style='width:960px; background:white; margin:0 auto; padding: 0;'>
+					<div>ao;wiejf;oweijf;oweijf;oaiewjfoawijfowejf</div>
+				<!-- <div class="fb-comments" data-href="http://evanlouie.com" data-num-posts="20" data-width="960"></div> -->
+				</div>
+			</div>
+			<!-- <div data-role="footer" style='position:fixed !important;'>
+				<a href='#' data-role='button' data-icon='plus'>Add</a>
+				<a href='#' data-role='button' data-icon='arrow-u'>Up</a>
+				<a href='#' data-role='button' data-icon='arrow-d'>Down</a>
+			</div> -->
+		</div>
+
+
 	</body>
 </html>
